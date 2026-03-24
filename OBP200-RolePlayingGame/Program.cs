@@ -6,9 +6,7 @@ namespace OBP200_RolePlayingGame;
 class Program
 {
     // ======= Globalt tillstånd  =======
-
-    // Spelarens "databas": alla värden som strängar
-    // index: 0 Name, 1 Class, 2 HP, 3 MaxHP, 4 ATK, 5 DEF, 6 GOLD, 7 XP, 8 LEVEL, 9 POTIONS, 10 INVENTORY (semicolon-sep)
+    
     static Player player;
     // Rum: [type, label]
     // types: battle, treasure, shop, rest, boss
@@ -626,7 +624,7 @@ class Program
             int value = Convert.ToInt32(s);
             return value;
         }
-        catch (Exception e)
+        catch 
         {
             return fallback;
         }
