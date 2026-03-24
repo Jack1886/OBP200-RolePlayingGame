@@ -72,32 +72,32 @@ class Program
         Console.Write("Val: ");
         var k = (Console.ReadLine() ?? "").Trim();
 
-        string cls = "Warrior";
+        string playerClass = "Warrior";
         int health = 0, maxhealth = 0, attack = 0, defense = 0;
         int potions = 0, gold = 0;
         
         switch (k)
         {
             case "1": // Warrior: tankig
-                cls = "Warrior";
+                playerClass = "Warrior";
                 maxhealth = 40; health = 40; attack = 7; defense = 5; potions = 2; gold = 15;
                 break;
             case "2": // Mage: hög damage, låg def
-                cls = "Mage";
+                playerClass = "Mage";
                 maxhealth = 28; health = 28; attack = 10; defense = 2; potions = 2; gold = 15;
                 break;
             case "3": // Rogue: krit-chans
-                cls = "Rogue";
+                playerClass = "Rogue";
                 maxhealth = 32; health = 32; attack = 8; defense = 3; potions = 3; gold = 20;
                 break;
             default:
-                cls = "Warrior";
+                playerClass = "Warrior";
                 maxhealth = 40; health = 40; attack = 7; defense = 5; potions = 2; gold = 15;
                 break;
         }
         
         //Player objekt
-        player = new Player(name, cls, health,maxhealth, attack, defense, potions, gold);
+        player = new Player(name, playerClass, health,maxhealth, attack, defense, potions, gold);
         
 
         // Initiera karta (linjärt äventyr)
@@ -112,7 +112,7 @@ class Program
 
         CurrentRoomIndex = 0;
 
-        Console.WriteLine($"Välkommen, {name} the {cls}!");
+        Console.WriteLine($"Välkommen, {name} the {playerClass}!");
         ShowStatus();
     }
 
@@ -325,11 +325,11 @@ class Program
 
     static int UseClassSpecial(int enemyDefense, bool vsBoss)
     {
-        string cls = player.ClassName ?? "Warrior";
+        string playerClass = player.ClassName ?? "Warrior";
         int specialDmg = 0;
 
         // Hantering av specialförmågor
-        if (cls == "Warrior")
+        if (playerClass == "Warrior")
         {
             // Heavy Strike: hög skada men självskada
             Console.WriteLine("Warrior använder Heavy Strike!");
@@ -337,7 +337,7 @@ class Program
             specialDmg = Math.Max(2, attack + 3 - enemyDefense);
             player.TakeDamage(2); // självskada
         }
-        else if (cls == "Mage")
+        else if (playerClass == "Mage")
         {
             // Fireball: stor skada, kostar guld
             int gold = player.Gold;
@@ -355,7 +355,7 @@ class Program
                 specialDmg = 0;
             }
         }
-        else if (cls == "Rogue")
+        else if (playerClass == "Rogue")
         {
             // Backstab: chans att ignorera försvar, hög risk/hög belöning
             if (Rng.NextDouble() < 0.5)
@@ -420,10 +420,10 @@ class Program
     static bool TryRunAway()
     {
         // Flyktschans baserad på karaktärsklass
-        string cls = player.ClassName ?? "Warrior";
+        string playerClass = player.ClassName ?? "Warrior";
         double chance = 0.25;
-        if (cls == "Rogue") chance = 0.5;
-        if (cls == "Mage") chance = 0.35;
+        if (playerClass == "Rogue") chance = 0.5;
+        if (playerClass == "Mage") chance = 0.35;
         return Rng.NextDouble() < chance;
     }
 
