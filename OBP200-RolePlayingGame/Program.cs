@@ -447,16 +447,16 @@ class Program
     {
         // Nivåtrösklar
         int xp = player.XP;
-        int lvl = player.Level;
-        int nextThreshold = lvl == 1 ? 10 : (lvl == 2 ? 25 : (lvl == 3 ? 45 : lvl * 20));
+        int level = player.Level;
+        int nextThreshold = level == 1 ? 10 : (level == 2 ? 25 : (level == 3 ? 45 : level * 20));
 
         if (xp >= nextThreshold)
         {
             // Uppgradering baserad på karaktärsklass
-            string cls = player.ClassName ?? "Warrior";
+            string playerClass = player.ClassName ?? "Warrior";
             int addedHealth = 0, addedAttack = 0, addedDefense = 0;
 
-            switch (cls)
+            switch (playerClass)
             {
                 case "Warrior":
                     addedHealth = 6; addedAttack = 2; addedDefense = 2;
@@ -473,7 +473,7 @@ class Program
             }
             player.LevelUp(addedHealth, addedAttack, addedDefense);
              // full heal vid level up
-            Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och Hälsa återställd.");
+            Console.WriteLine($"Du når nivå {level + 1}! Värden ökade och Hälsa återställd.");
         }
     }
 
