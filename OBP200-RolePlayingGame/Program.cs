@@ -12,7 +12,7 @@ class Program
     // types: battle, treasure, shop, rest, boss
     static List<string[]> Rooms = new List<string[]>();
 
-    // Fiendemallar: [type, name, HP, ATK, DEF, XPReward, GoldReward]
+    // Fiendemallar: [Type, Name, Health, Attack, Defense, XPReward, GoldReward]
     static List<string[]> EnemyTemplates = new List<string[]>();
 
     // Status för kartan
@@ -473,7 +473,7 @@ class Program
             }
             player.LevelUp(addedHealth, addedAttack, addedDefense);
              // full heal vid level up
-            Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och HP återställd.");
+            Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och Hälsa återställd.");
         }
     }
 
@@ -523,7 +523,7 @@ class Program
             Console.WriteLine("1) Köp dryck (10 guld)");
             Console.WriteLine("2) Köp vapen (+2 ATK) (25 guld)");
             Console.WriteLine("3) Köp rustning (+2 DEF) (25 guld)");
-            Console.WriteLine("4) Sälj alla 'Minor Gem' (+5 guld/st)");
+            Console.WriteLine("4) Sälj alla 'Minor Gem' (+5 guld/styck)");
             Console.WriteLine("5) Lämna butiken");
             Console.Write("Val: ");
             var val = (Console.ReadLine() ?? "").Trim();
@@ -591,14 +591,14 @@ class Program
         
         player.AddGold (count * 5);
        
-        Console.WriteLine($"Du säljer {count} st Minor Gem för {count * 5} guld.");
+        Console.WriteLine($"Du säljer {count} stycken Minor Gem för {count * 5} guld.");
     }
 
     static bool DoRest()
     {
         Console.WriteLine("Du slår läger och vilar.");
         player.Heal(player.MaxHealth);
-        Console.WriteLine("HP återställt till max.");
+        Console.WriteLine("Hälsa återställt till max.");
         return true;
     }
 
