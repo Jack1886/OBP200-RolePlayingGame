@@ -75,31 +75,31 @@ class Program
         var k = (Console.ReadLine() ?? "").Trim();
 
         string cls = "Warrior";
-        int hp = 0, maxhp = 0, atk = 0, def = 0;
+        int health = 0, maxhealth = 0, attack = 0, defense = 0;
         int potions = 0, gold = 0;
         
         switch (k)
         {
             case "1": // Warrior: tankig
                 cls = "Warrior";
-                maxhp = 40; hp = 40; atk = 7; def = 5; potions = 2; gold = 15;
+                maxhealth = 40; health = 40; attack = 7; defense = 5; potions = 2; gold = 15;
                 break;
             case "2": // Mage: hög damage, låg def
                 cls = "Mage";
-                maxhp = 28; hp = 28; atk = 10; def = 2; potions = 2; gold = 15;
+                maxhealth = 28; health = 28; attack = 10; defense = 2; potions = 2; gold = 15;
                 break;
             case "3": // Rogue: krit-chans
                 cls = "Rogue";
-                maxhp = 32; hp = 32; atk = 8; def = 3; potions = 3; gold = 20;
+                maxhealth = 32; health = 32; attack = 8; defense = 3; potions = 3; gold = 20;
                 break;
             default:
                 cls = "Warrior";
-                maxhp = 40; hp = 40; atk = 7; def = 5; potions = 2; gold = 15;
+                maxhealth = 40; health = 40; attack = 7; defense = 5; potions = 2; gold = 15;
                 break;
         }
         
         //Player objekt
-        player = new Player(name, cls, hp,maxhp, atk, def, potions, gold);
+        player = new Player(name, cls, health,maxhealth, attack, defense, potions, gold);
         
 
         // Initiera karta (linjärt äventyr)
@@ -190,13 +190,13 @@ class Program
     static bool DoBattle(bool isBoss)
     {
         var enemy = GenerateEnemy(isBoss);
-        Console.WriteLine($"En {enemy.Name} dyker upp! (HP {enemy.Health}, ATK {enemy.Attack}, DEF {enemy.Defense})");
+        Console.WriteLine($"En {enemy.Name} dyker upp! (Health {enemy.Health}, Attack {enemy.Attack}, Defense {enemy.Defense})");
         
         while (!enemy.IsDead() && !player.IsDead())
         {
             Console.WriteLine();
             ShowStatus();
-            Console.WriteLine($"Fiende: {enemy.Name} HP={enemy.Health}");
+            Console.WriteLine($"Fiende: {enemy.Name} Health={enemy.Health}");
             Console.WriteLine("[A] Attack   [X] Special   [P] Dryck   [R] Fly");
             
             if (isBoss) Console.WriteLine("(Du kan inte fly från en boss!)");
@@ -297,13 +297,13 @@ class Program
         EnemyTemplates.Add(new[] { "slime", "Geléslem", "14", "3", "0", "5", "3" });
     }
 
-    static int CalculatePlayerDamage(int enemyDef)
+    static int CalculatePlayerDamage(int enemyDefense)
     {
-        int atk = player.Attack;
+        int attack = player.Attack;
         string cls = player.ClassName ?? "Warrior";
 
         // Beräkna grundskada
-        int baseDmg = Math.Max(1, atk - (enemyDef / 2));
+        int baseDmg = Math.Max(1, attack - (enemyDefense / 2));
         int roll = Rng.Next(0, 3); // liten variation
 
         switch (cls.Trim())
@@ -325,7 +325,7 @@ class Program
         return Math.Max(1, baseDmg + roll);
     }
 
-    static int UseClassSpecial(int enemyDef, bool vsBoss)
+    static int UseClassSpecial(int enemyDefense, bool vsBoss)
     {
         string cls = player.ClassName ?? "Warrior";
         int specialDmg = 0;
@@ -335,8 +335,8 @@ class Program
         {
             // Heavy Strike: hög skada men självskada
             Console.WriteLine("Warrior använder Heavy Strike!");
-            int atk = player.Attack;
-            specialDmg = Math.Max(2, atk + 3 - enemyDef);
+            int attack = player.Attack;
+            specialDmg = Math.Max(2, attack + 3 - enemyDefense);
             player.TakeDamage(2); // självskada
         }
         else if (cls == "Mage")
@@ -348,8 +348,8 @@ class Program
             {
                 Console.WriteLine("Mage kastar Fireball!");
                player.SpendGold(3);
-               int atk = player.Attack;
-                specialDmg = Math.Max(3, atk + 5 - (enemyDef / 2));
+               int attack = player.Attack;
+                specialDmg = Math.Max(3, attack + 5 - (enemyDefense / 2));
             }
             else
             {
@@ -363,8 +363,8 @@ class Program
             if (Rng.NextDouble() < 0.5)
             {
                 Console.WriteLine("Rogue utför en lyckad Backstab!");
-                int atk = player.Attack;
-                specialDmg = Math.Max(4, atk + 6);
+                int attack = player.Attack;
+                specialDmg = Math.Max(4, attack + 6);
             }
             else
             {
@@ -386,22 +386,22 @@ class Program
         return Math.Max(0, specialDmg);
     }
 
-    static int CalculateEnemyDamage(int enemyAtk)
+    static int CalculateEnemyDamage(int enemyAttack)
     {
         int def = player.Defense;
         int roll = Rng.Next(0, 3);
 
-        int dmg = Math.Max(1, enemyAtk - (def / 2)) + roll;
+        int damage = Math.Max(1, enemyAttack - (def / 2)) + roll;
 
         // Liten chans till "glancing blow" (minskad skada)
-        if (Rng.NextDouble() < 0.1) dmg = Math.Max(1, dmg - 2);
+        if (Rng.NextDouble() < 0.1) damage = Math.Max(1, damage - 2);
 
-        return dmg;
+        return damage;
     }
 
-    static void ApplyDamageToPlayer(int dmg)
+    static void ApplyDamageToPlayer(int damage)
     {
-        player.TakeDamage(dmg);
+        player.TakeDamage(damage);
     }
 
     static void UsePotion()
@@ -416,7 +416,7 @@ class Program
         // Helning av spelaren
        player.Heal(12);
        player.UsePotion();
-        Console.WriteLine($"Du dricker en dryck och återfår {player.Health - oldHealth} HP.");
+        Console.WriteLine($"Du dricker en dryck och återfår {player.Health - oldHealth} Hälsa.");
     }
 
     static bool TryRunAway()
@@ -608,7 +608,7 @@ class Program
 
     static void ShowStatus()
     {
-        Console.WriteLine($"[{player.Name} | {player.ClassName}]  HP {player.Health}/{player.MaxHealth}  ATK {player.Attack}  DEF {player.Defense}  LVL {player.Level}  XP {player.XP}  Guld {player.Gold}  Drycker {player.Potions}");
+        Console.WriteLine($"[{player.Name} | {player.ClassName}]  Health {player.Health}/{player.MaxHealth}  Attack {player.Attack}  Defense {player.Defense}  Level {player.Level}  XP {player.XP}  Guld {player.Gold}  Drycker {player.Potions}");
        
        
         if (player.Inventory.Count > 0)
